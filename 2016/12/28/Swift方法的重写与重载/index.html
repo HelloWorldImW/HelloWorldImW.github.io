@@ -1,0 +1,682 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Joe">
+  <meta name="keywords" content="undefined">
+  
+    <meta name="description" content="构造方法是一个类创建对象最先也是必须调用的方法, 在OC中, 我们更习惯称这类方法为初始化方法. OC中的初始化方法与普通方法相比,并没有太严格的分界除了要以init开头. 在Swift语言体系中，构造方法与普通的方法分界十分严格，从格式写法上就有不同，普通方法函数要以func声明，构造方法统一为init命名，不需要func关键字声明，不同的构造方法采用方法重载方式创建(在OC中并没有重载的概念">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift中重写重载构造(初始化)方法">
+<meta property="og:url" content="https://zhihaoo.wang/2016/12/28/Swift%E6%96%B9%E6%B3%95%E7%9A%84%E9%87%8D%E5%86%99%E4%B8%8E%E9%87%8D%E8%BD%BD/index.html">
+<meta property="og:site_name" content="至皓君的Blog">
+<meta property="og:description" content="构造方法是一个类创建对象最先也是必须调用的方法, 在OC中, 我们更习惯称这类方法为初始化方法. OC中的初始化方法与普通方法相比,并没有太严格的分界除了要以init开头. 在Swift语言体系中，构造方法与普通的方法分界十分严格，从格式写法上就有不同，普通方法函数要以func声明，构造方法统一为init命名，不需要func关键字声明，不同的构造方法采用方法重载方式创建(在OC中并没有重载的概念">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-12-28T23:33:32.000Z">
+<meta property="article:modified_time" content="2025-06-20T06:54:09.061Z">
+<meta property="article:author" content="Joe">
+<meta property="article:tag" content="Swift">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Swift中重写重载构造(初始化)方法 - 至皓君的Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zhihaoo.wang","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="至皓君的Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>至皓君的Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Swift中重写重载构造(初始化)方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2016-12-28 23:33" pubdate>
+          2016年12月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Swift中重写重载构造(初始化)方法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>构造方法是一个类创建对象最先也是必须调用的方法, 在OC中, 我们更习惯称这类方法为初始化方法. OC中的初始化方法与普通方法相比,并没有太严格的分界除了要以init开头. 在Swift语言体系中，构造方法与普通的方法分界十分严格，从格式写法上就有不同，普通方法函数要以func声明，构造方法统一为init命名，不需要func关键字声明，不同的构造方法采用方法重载方式创建(<strong><em>在OC中并没有重载的概念,因为OC的一个方法每增加一个参数就会变成另外一个新的方法</em></strong>)。</p>
+</blockquote>
+<h2 id="一、Swift方法的重写与重载"><a href="#一、Swift方法的重写与重载" class="headerlink" title="一、Swift方法的重写与重载"></a>一、Swift方法的重写与重载</h2><h3 id="重写"><a href="#重写" class="headerlink" title="重写:"></a>重写:</h3><p><em>在Swift中，重写父类方法必须需要重写的方法前添加<code>override</code>关键字</em></p>
+<ul>
+<li><strong>定义</strong>: 方法重写顾名思义,就是对一个方法的重新实现.</li>
+<li><strong>示例</strong><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">/// 父类中声明一个方法</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuperClass</span>: <span class="hljs-title class_ inherited__">NSObject</span> &#123;<br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">sayHelloWorld</span>() &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello World&quot;</span>) <span class="hljs-comment">//!&lt; 输出 Hello World</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">/// 子类中重写父类的方法</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubClass</span>: <span class="hljs-title class_ inherited__">SuperClass</span> &#123;<br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="hljs-title function_">sayHelloWorld</span>() &#123;<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello World I am Wang&quot;</span>) <span class="hljs-comment">//!&lt; 输出 Hello World I am Wang</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="方法-重载"><a href="#方法-重载" class="headerlink" title="(方法)重载:"></a>(方法)重载:</h3></li>
+<li><strong>定义</strong>:简单来说就是方法名相同,但是参数列表不同. 这样同名不同参的方法之间互相称之为重载方法.</li>
+<li><strong>示例</strong><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-comment">/// 子类中重载父类的方法</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubClass</span>: <span class="hljs-title class_ inherited__">SuperClass</span> &#123;<br>	<span class="hljs-comment">/// sayHelloWorld(name: &quot;WangZH&quot;)</span><br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">sayHelloWorld</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">super</span>.sayHelloWorld()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello World I am <span class="hljs-subst">\(name)</span>&quot;</span>) <span class="hljs-comment">//!&lt; 输出 Hello World I am WangZH</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="二、Swift构造方法的重写和重载"><a href="#二、Swift构造方法的重写和重载" class="headerlink" title="二、Swift构造方法的重写和重载"></a>二、Swift构造方法的重写和重载</h2><blockquote>
+<p> Swift中的构造方法分为<strong>Designated</strong>构造方法(指定构造方法)与<strong>Convenience</strong>构造方法(方便构造方法)两类。<strong>Designated</strong>构造方法不加任何修饰关键字，<strong>Convenience</strong>构造方法需要使用<strong>Convenience</strong>关键字进行修饰。简而言之，<strong>Convenience</strong>构造方法就是为了方便使用<strong>Designated</strong>构造方法。</p>
+</blockquote>
+<h3 id="NSObject-子类构造方法的重写与重载"><a href="#NSObject-子类构造方法的重写与重载" class="headerlink" title="NSObject 子类构造方法的重写与重载"></a>NSObject 子类构造方法的重写与重载</h3></li>
+<li>NSObject子类构造方法的重写、重载和正常的方法并没有什么太大的区别，唯一值得注意的是<strong>你要保证，在构造方法完成之前，完成所有成员常量（变量）的构造和赋值，可选值（optional）除外。</strong></li>
+<li>以下代码并没有涉及到成员变量（常量）的初始化赋值<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuperClass</span>: <span class="hljs-title class_ inherited__">NSObject</span> &#123;<br>    <span class="hljs-comment">/// 重写父类init()方法</span><br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>() &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Say Hello&quot;</span>)<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subclass</span>: <span class="hljs-title class_ inherited__">SuperClass</span> &#123;<br>    <span class="hljs-comment">/// 重载父类的init()方法</span><br>    <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>, <span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">\(name)</span> Say <span class="hljs-subst">\(word)</span>&quot;</span>)<br>    &#125;<br>    <br>    <span class="hljs-comment">/// 创建便利初始化方法，调用了self.init(name: String, word: String)方法</span><br>    <span class="hljs-keyword">convenience</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">self</span>.<span class="hljs-keyword">init</span>(name: <span class="hljs-string">&quot;WangZH&quot;</span>, word: word)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>在子类的构造方法中改变父类的变量值<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuperClass</span>: <span class="hljs-title class_ inherited__">NSObject</span> &#123;<br>    <span class="hljs-comment">/// 声明一个number变量</span><br>    <span class="hljs-keyword">var</span> number: <span class="hljs-type">Int</span><br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>() &#123;<br>        <span class="hljs-comment">/// 初始化完成之前给number赋值</span><br>        number <span class="hljs-operator">=</span> <span class="hljs-number">0</span><br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Say Hello&quot;</span>)<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subclass</span>: <span class="hljs-title class_ inherited__">SuperClass</span> &#123;<br>    <span class="hljs-comment">/// 声明一个变量numberStr</span><br>    <span class="hljs-keyword">var</span> numberStr: <span class="hljs-type">String</span><br>    <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>, <span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-comment">/// 初始化之前完成赋值</span><br>        numberStr <span class="hljs-operator">=</span> <span class="hljs-string">&quot;1&quot;</span><br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>        <span class="hljs-comment">/// 初始化完成之后修改父类的变量值</span><br>        number <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;<span class="hljs-subst">\(name)</span> Say <span class="hljs-subst">\(word)</span>&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<em>在子类的构造方法中改变父类的变量值，需要父类初始化完成之后才可以更改，需要注意的是<strong>如果在这个构造方法中还需要给自己的变量赋值，则需要放在父类初始化完成之前。</strong></em><h3 id="UIViewController子类构造方法的重写与重载"><a href="#UIViewController子类构造方法的重写与重载" class="headerlink" title="UIViewController子类构造方法的重写与重载"></a>UIViewController子类构造方法的重写与重载</h3></li>
+<li>UIViewController子类构造方法的重写、重载和NSObject子类的重写、重载基本上相同，但是有一些需要注意的地方。<br>先看以下代码:<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_ inherited__">UIViewController</span> &#123;<br>    <span class="hljs-comment">/// 重写父类的init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)方法</span><br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">nibName</span> <span class="hljs-params">nibNameOrNil</span>: <span class="hljs-type">String</span>?, <span class="hljs-params">bundle</span> <span class="hljs-params">nibBundleOrNil</span>: <span class="hljs-type">Bundle</span>?) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(nibName: nibNameOrNil, bundle: nibBundleOrNil)<br>    &#125;<br>    <br>    <span class="hljs-comment">/// 重载父类的init()</span><br>    <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(nibName: <span class="hljs-literal">nil</span>, bundle: <span class="hljs-literal">nil</span>)<br>    &#125;<br>    <br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">init?</span>(<span class="hljs-params">coder</span> <span class="hljs-params">aDecoder</span>: <span class="hljs-type">NSCoder</span>) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(coder: aDecoder)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+上面代码重写和重载了父类的构造方法，大家有没有发现重载父类方法的时候<code>super</code>调用的是<code>init(nibName:  nibName,  bundle: bundle)</code>方法?这是为什么呢？ 苹果官方是这么说的：<blockquote>
+<p>The designated initializer. If you subclass UIViewController, you must call the super implementation of this<br>method, even if you aren’t using a NIB.  (As a convenience, the default init method will do this for you,<br>and specify nil for both of this methods arguments.) In the specified NIB, the File’s Owner proxy should<br>have its class set to your view controller subclass, with the view outlet connected to the main view. If you<br>invoke this method with a nil nib name, then this class’ -loadView method will attempt to load a NIB whose<br>name is the same as your view controller’s class. If no such NIB in fact exists then you must either call<br>-setView: before -view is invoked, or override the -loadView method to set up your views programatically.<br><code>public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)</code></p>
+</blockquote>
+</li>
+</ul>
+<p>这段话的大体意思就是VC的<code>init()</code>是一个<em>Convenience</em>类型的构造方法，它会帮你把<code>public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)</code>方法的两个参数都设置成nil。也就是说，如果你要重载UIViewController的<code>init()</code>方法，就需要手动将上面方法的两个参数置为<code>nil</code>。修改后<code>init()</code>重载的代码如下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_ inherited__">UIViewController</span> &#123; <br>    <span class="hljs-comment">/// 便利构造方法</span><br>    <span class="hljs-keyword">convenience</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>) &#123;<br>    <span class="hljs-comment">/// 根据Swift构造方法的特点，如果子类没有定义任何*Designated*类型的构造方法，则默认继承父类所有的*Designated*构造方法。</span><br>        <span class="hljs-keyword">self</span>.<span class="hljs-keyword">init</span>(nibName: <span class="hljs-literal">nil</span>, bundle: <span class="hljs-literal">nil</span>)<br>    &#125;    <br>&#125;<br></code></pre></td></tr></table></figure><br>当然，还可以这么写：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_ inherited__">UIViewController</span> &#123;<br>    <span class="hljs-keyword">convenience</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>) &#123;<br>    <span class="hljs-comment">/// 其实和上面的原理是一样的，UIViewController的init()方法把init(nibName: nib, bundle: bundle)的两个参数默认设置成了nil, 当然，这样看起来简洁一些</span><br>        <span class="hljs-keyword">self</span>.<span class="hljs-keyword">init</span>()<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>OK，说完重载再回过头来说一下构造方法的重写，看下面代码：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span>: <span class="hljs-title class_ inherited__">UIViewController</span> &#123;<br>	<span class="hljs-comment">/// 重写方法</span><br>    <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">nibName</span> <span class="hljs-params">nibNameOrNil</span>: <span class="hljs-type">String</span>?, <span class="hljs-params">bundle</span> <span class="hljs-params">nibBundleOrNil</span>: <span class="hljs-type">Bundle</span>?) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(nibName: nibNameOrNil, bundle: nibBundleOrNil)<br>    &#125;<br>    <span class="hljs-comment">/// UIViewController中标记子类必须要实现的方法</span><br>    <span class="hljs-keyword">required</span> <span class="hljs-keyword">init?</span>(<span class="hljs-params">coder</span> <span class="hljs-params">aDecoder</span>: <span class="hljs-type">NSCoder</span>) &#123;<br>        <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">&quot;init(coder:) has not been implemented&quot;</span>)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure><br>上面代码重写了UIViewController的<code>init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)</code>方法，编译器没有报错，运行没有问题，那么这个就可以跳过了。等等，下面的<code>required init?(coder aDecoder: NSCoder)</code>方法是什么鬼啊？Ok，先来说一下<code>required</code>这个修饰符，<code>required</code>修饰的方法要求子类<strong>必须实现</strong>，如果子类不实现，编译是不会通过的。那么问题又来了，我们平常用<code>ViewController</code>的时候也没有实现这个方法啊，程序跑的也很欢快啊，这是怎么回事呢？因为Swift构造方法的特点之一就是：<strong>“如果子类没有定义任何 </strong>Designated<strong> 类型的构造方法，则默认继承父类所有的 </strong>Designated<strong> 构造方法”</strong>。这下就明了吧，不是子类没有实现，只不过是继承了父类的实现罢了。那么接下来就要说一下UIView的构造方法了。再等等，可是为什么<strong>重写了方法</strong>之后就需要子类来实现了呢？答案还是在Swift构造方法的特点里：<strong>如果子类重写了父类的某一构造方法，则默认不在继承父类所有的构造方法。对于Designated类型的构造方法，子类重写了哪些，哪些才能够被使用。对于Convenienve类型的构造方法，需要在子类的重写方法中调用其依赖的父类Designated构造方法，代码如下:</strong><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SuperClass</span>: <span class="hljs-title class_ inherited__">NSObject</span> &#123;<br>    <span class="hljs-comment">/// 父类convenience方法依赖的designated方法</span><br>    <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>, <span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()<br>    &#125;<br>    <br>    <span class="hljs-keyword">convenience</span> <span class="hljs-keyword">init</span>(<span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-keyword">self</span>.<span class="hljs-keyword">init</span>(name: <span class="hljs-string">&quot;wangzh&quot;</span>, word: word)<br>    &#125;<br>    <br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubClass</span>: <span class="hljs-title class_ inherited__">SuperClass</span> &#123;<br>   <br>    <span class="hljs-comment">/// 重写父类的convenience方法</span><br>    <span class="hljs-keyword">init</span>(<span class="hljs-params">word</span>: <span class="hljs-type">String</span>) &#123;<br>        <span class="hljs-comment">/// 调用父类convenience依赖的designed方法</span><br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(name: <span class="hljs-string">&quot;哈哈&quot;</span>, word: <span class="hljs-string">&quot;ha&quot;</span>)<br>        <br>        <span class="hljs-comment">/// 这种调用是不会被编译通过的</span><br>        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(word: word)<br>        <br>    &#125;<br>    <br>    <span class="hljs-keyword">func</span> <span class="hljs-title function_">test</span>() &#123;<br>        <span class="hljs-keyword">let</span> subClass <span class="hljs-operator">=</span> <span class="hljs-type">SubClass</span>.<span class="hljs-keyword">init</span>(word: <span class="hljs-string">&quot;哈哈&quot;</span>)<br>        <span class="hljs-built_in">print</span>(subClass)<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<h3 id="UIView子类构造方法的重写与重载"><a href="#UIView子类构造方法的重写与重载" class="headerlink" title="UIView子类构造方法的重写与重载"></a>UIView子类构造方法的重写与重载</h3><blockquote>
+<p>UIView的构造方法其实就和UIViewController里面的差不多。可以这么说，UIKit里面构造方法的重写和重载都和上面说的UiViewController的差不多，这里就不多赘述了。</p>
+</blockquote>
+<h2 id="感谢："><a href="#感谢：" class="headerlink" title="感谢："></a>感谢：</h2><p><a href="https://yq.aliyun.com/articles/39484">珲少</a><br>分享的文章</p>
+<p>原创作品，转载请注明出处：<a href="https://zhihaoo.wang">https://zhihaoo.wang</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+  <a href="/categories/iOS%E5%BC%80%E5%8F%91/" class="category-chain-item">iOS开发</a>
+  
+  
+
+      <span class="category-chain">
+        
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Swift/" class="print-no-link">#Swift</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Swift中重写重载构造(初始化)方法</div>
+      <div>https://zhihaoo.wang/2016/12/28/Swift方法的重写与重载/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Joe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2016年12月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/04/13/Swift3.1%E6%96%B0%E5%A2%9E%E7%9A%84%E7%89%B9%E6%80%A7/" title="Swift3.1新增的特性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Swift3.1新增的特性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      鲁ICP备2022002916号-2
+    </a>
+  </span>
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
